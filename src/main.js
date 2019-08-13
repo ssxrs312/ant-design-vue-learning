@@ -1,13 +1,12 @@
 import Vue from 'vue'
-import { Button } from "ant-design-vue";
-import "ant-design-vue/dist/antd.css";
 import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import "ant-design-vue/dist/antd.css";
+import { Button,Icon,Dropdown,Menu } from "ant-design-vue"; //按需导入
 
-
-Vue.component(Button.name, Button);
+Vue.use(Button).use(Icon).use(Dropdown).use(Menu)
 
 Vue.config.productionTip = false
 
