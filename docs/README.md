@@ -738,3 +738,199 @@ Vue.use(Button).use(Icon).use(Dropdown).use(Menu).use(Radio)
 
 ![image-20190813162409805](http://ww4.sinaimg.cn/large/006tNc79ly1g5y4p6lb00j30op05caab.jpg)
 
+# 3 图标icon
+
+## 3.1 基本用法
+
+- 新建src/components/IconDemo.vue
+- src/main.js中引入第三方组件
+- src/router.js的routers中设置IconDemo.vue的路由
+- src/views/Home.vue中router-link to指向IconDemo.vue的路径path或者name
+- 浏览器测试效果
+
+**IconDemo.vue**
+
+```vue
+<template>
+    <div class="icondemo">
+        <br/>
+        <h3>1、基本用法 </h3>
+        <p>使用icon标签声明组件，指定图标对应的 type 属性。可以通过 theme 属性来设置不同的主题风格的图标，
+            也可以通过设置 spin 属性来实现动画旋转效果。</p>
+        <div class="icons-list">
+            <a-icon type="home" />
+            <a-icon type="setting" theme="filled" />
+            <a-icon type="smile" theme="outlined" />
+            <a-icon type="sync" spin />
+            <a-icon type="loading" />
+        </div>
+
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "IconDemo"
+    }
+</script>
+
+<style scoped>
+    .icondemo{
+        margin: 2rem 2rem;
+    }
+    .icons-list >>> .anticon {
+        margin-right: 6px;
+        font-size: 24px;
+    }
+</style>
+```
+
+上面的代码中
+
+- .icons-list >>> .anticon是什么没看懂，我的理解是不是让图标间隔让出距离
+
+  ![image-20190813205738475](http://ww2.sinaimg.cn/large/006tNc79ly1g5yebxrpldj30oe036aag.jpg)
+
+  
+
+**main.js**
+
+```js
+...
+import "ant-design-vue/dist/antd.css";
+import { Button,Icon,Dropdown,Menu,Radio } from "ant-design-vue"; //按需导入
+
+Vue.use(Button).use(Icon).use(Dropdown).use(Menu).use(Radio)
+...
+```
+
+**router.js**
+
+```js
+...
+import IconDemo from '@/components/IconDemo.vue'
+
+export default new Router({
+
+  routes: [
+    {
+      path: '/iconDemo',
+      name: 'iconDemo',
+      component: IconDemo
+    },
+
+  ]
+})
+```
+
+**Home.vue**
+
+```vue
+<template>
+  <div class="home">
+
+      <br/>
+      <h1>列表index</h1>
+      <ul>
+         <li>
+              <router-link to="/iconDemo">IconDemo</router-link>：图标 Icon
+          </li>
+      </ul>
+
+  </div>
+</template>
+```
+
+**浏览器**
+
+![image-20190813204727622](http://ww3.sinaimg.cn/large/006tNc79ly1g5yeby5cokj30p403tgm0.jpg)
+
+## 3.2 使用 iconfont.cn
+
+- 修改src/components/IconDemo.vue
+- 浏览器测试效果
+
+**IconDemo.vue**
+
+```vue
+<template>
+    <div class="icondemo">
+
+        <br/>
+        <h3>2、使用 iconfont.cn </h3>
+        <p>对于使用 iconfont.cn 的用户，通过设置 createFromIconfontCN 方法参数对象中的 scriptUrl 字段， 即可轻松地使用已有项目中的图标。</p>
+        <div class="icons-list">
+            <icon-font type="icon-tuichu" />
+            <icon-font type="icon-facebook" />
+            <icon-font type="icon-twitter" />
+        </div>
+
+    </div>
+</template>
+
+<script>
+    import { Icon } from 'ant-design-vue';
+
+    const IconFont = Icon.createFromIconfontCN({
+        scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
+    })
+
+    export default {
+        name: "IconDemo",
+        components: {
+            IconFont,
+        }
+    }
+</script>
+
+<style scoped>
+    .icondemo{
+        margin: 2rem 2rem;
+    }
+    .icons-list  >>> .anticon {
+        margin-right: 6px;
+        font-size: 24px;
+    }
+</style>
+```
+
+**浏览器**
+
+![image-20190813215521465](http://ww1.sinaimg.cn/large/006tNc79ly1g5yebym5joj30m502twer.jpg)
+
+## 3.3 多色图标
+
+- 修改src/components/IconDemo.vue
+- 浏览器测试效果
+
+IconDemo.vue
+
+```vue
+<template>
+    <div class="icondemo">
+  			...
+        <br/>
+        <h3>3、多色图标  </h3>
+        <p>可以通过设置 theme 属性为 twoTone 来渲染双色图标，并且可以设置主题色。</p>
+        <div class="icons-list">
+            <a-icon type="smile" theme="twoTone" />
+            <a-icon type="heart" theme="twoTone" twoToneColor="#eb2f96" />
+            <a-icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
+        </div>
+
+    </div>
+</template>
+
+
+<style scoped>
+    .icons-list  >>> .anticon {
+        margin-right: 6px;
+        font-size: 24px;
+    }
+</style>
+```
+
+**浏览器**
+
+![image-20190813215905494](http://ww4.sinaimg.cn/large/006tNc79ly1g5yebz86n9j30e502tq33.jpg)
+

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import ButtonDemo from '@/components/ButtonDemo.vue'
+import IconDemo from '@/components/IconDemo.vue'
 
 Vue.use(Router)
 
@@ -18,6 +19,11 @@ export default new Router({
       path: '/buttondemo',
       name: 'buttondemo',
       component: ButtonDemo
+    },
+    {
+      path: '/iconDemo',
+      name: 'iconDemo',
+      component: IconDemo
     },
 
   ]
