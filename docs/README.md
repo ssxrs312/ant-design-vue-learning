@@ -116,7 +116,7 @@ new Vue({
 }).$mount('#app')
 ```
 
-上面的代码，采用的是按需导入第三方的组件，比完全导入的好处是节省资源空间。下图是使用的例子
+上面的代码，采用的是按需导入第三方的组件，比完全导入的好处是节省资源空间。下图是参考如何使用的案例
 
 ![image-20190813111444169](http://ww1.sinaimg.cn/large/006tNc79ly1g5xwya2lghj30r70dhtbi.jpg)
 
@@ -413,4 +413,328 @@ Vue.use(Button).use(Icon)
 **浏览器**
 
 ![image-20190813115744191](http://ww2.sinaimg.cn/large/006tNc79ly1g5xwybueflj313j07iwfy.jpg)
+
+## 2.4 幽灵按钮
+
+- 修改src/components/ButtonDemo.vue
+- 浏览器测试效果
+
+**ButtonDemo.vue**
+
+```vue
+<template>
+    <div id="buttondemo">
+...
+        <br/>
+        <h3>4、幽灵按钮</h3>
+        <p>幽灵按钮将其他按钮的内容反色，背景变为透明，常用在有色背景上。</p>
+        <div :style="{ background: 'rgb(190, 200, 200)', padding: '26px 16px 16px' }">
+            <a-button type="primary" ghost>Primary</a-button>
+            <a-button ghost>Default</a-button>
+            <a-button type="dashed" ghost>Dashed</a-button>
+            <a-button type="danger" ghost>danger</a-button>
+        </div>
+    
+    </div>
+</template>
+
+```
+
+**浏览器**
+
+![image-20190813152846619](http://ww3.sinaimg.cn/large/006tNc79ly1g5y4p3g7roj3132042aaf.jpg)
+
+## 2.5 图标按钮
+
+- 修改src/components/ButtonDemo.vue
+- 浏览器测试效果
+
+**ButtonDemo.vue**
+
+```vue
+<template>
+    <div id="buttondemo">
+...
+        <br/>
+        <h3>5、图标按钮</h3>
+        <p>当需要在 Button 内嵌入 Icon 时，直接在 Button 内使用 Icon 组件。或者设置 icon 属性shape。</p>
+        <div>
+            <a-button type="primary" shape="circle" icon="search"></a-button>
+            <a-button type="primary" icon="search">Search</a-button>
+            <a-button shape="circle" icon="search" />
+            <a-button icon="search">Search</a-button>
+            <a-button shape="circle" icon="search" />
+            <a-button icon="search">Search</a-button>
+            <a-button type="dashed" shape="circle" icon="search" />
+            <a-button type="dashed" icon="search">Search</a-button>
+        </div>
+
+    </div>
+</template>
+```
+
+**浏览器**
+
+![image-20190813153115398](http://ww3.sinaimg.cn/large/006tNc79ly1g5y4p49folj30g40333yw.jpg)
+
+## 2.6 加载中状态
+
+- 修改src/components/ButtonDemo.vue
+- 浏览器测试效果
+
+**ButtonDemo.vue**
+
+```vue
+<template>
+    <div id="buttondemo">
+...
+        <br/>
+        <h3>6、加载中状态 </h3>
+        <p>添加 loading 属性即可让按钮处于加载状态，最后两个按钮演示点击后进入加载状态。</p>
+        <div>
+            <a-button type="primary" loading>
+                Loading
+            </a-button>
+            <a-button type="primary" size="small" loading>
+                Loading
+            </a-button>
+            <br />
+            <a-button shape="circle" loading />
+            <a-button type="primary" shape="circle" loading />
+            <br />
+            <a-button type="primary" :loading="zhuangtai" @mouseenter="enterLoading">
+                mouseenter me!
+            </a-button>
+            <a-button type="primary" icon="poweroff" :loading="iconZhuangtai" @click="enterIconLoading">
+                延迟1s
+            </a-button>
+        </div>
+
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "ButtonDemo",
+        data(){
+            return{
+                zhuangtai:false,
+                iconZhuangtai:false,
+            }
+        },
+        methods:{
+            enterLoading(){
+                this.zhuangtai = true;
+            },
+            enterIconLoading(){
+                this.iconZhuangtai = {delay:1000}
+            },
+           
+        }
+    }
+</script>
+```
+
+上面的代码中
+
+- @mouseenter="enterLoading"，鼠标经过的时候会调用方法enterLoading，请方法可以让zhuangtai=true
+- @click="enterIconLoading"，点击时会调用方法enterIconLoading，其方法可以让iconZhuangtai延迟1秒。这说明loading有2个值，如果:loading时，要么false，不发生加载状态；要么true，发生加载状态。如果有delay的话，就会延迟加载状态
+
+**浏览器**
+
+![image-20190813153717864](http://ww1.sinaimg.cn/large/006tNc79ly1g5y4p4rwoaj30ed04o3yy.jpg)
+
+## 2.7 多个按钮组合
+
+- 修改src/components/ButtonDemo.vue
+- src/main.js中引入第三方组件
+- 浏览器测试效果
+
+****
+
+**ButtonDemo.vue**
+
+```vue
+<template>
+    <div id="buttondemo">
+				...
+        <br/>
+        <h3>7、多个按钮组合  </h3>
+        <p>按钮组合使用时，推荐使用1个主操作 + n 个次操作，3个以上操作时把更多操作放到 Dropdown.Button 中组合使用。</p>
+        <a-button type="primary">Primary</a-button>
+        <a-button>secondary</a-button>
+        <div>
+            <a-dropdown>
+                <a-menu slot="overlay" @click="handleMenuClick">
+                    <a-menu-item key="1">1st item</a-menu-item>
+                    <a-menu-item key="2">2nd item</a-menu-item>
+                    <a-menu-item key="3">3rd item</a-menu-item>
+                </a-menu>
+                <a-button>
+                    Actions <a-icon type="down" />
+                </a-button>
+            </a-dropdown>
+        </div>
+
+    </div>
+</template>
+
+<script>
+    export default {
+				...
+        methods:{
+           ...
+            handleMenuClick(e) {
+                console.log('click', e);
+            }
+        }
+    }
+</script>
+
+```
+
+上面的代码中
+
+- <a-dropdown>需要导入{ Dropdown }
+
+- <a-menu>需要导入{ Menu }
+
+- 按钮组合使用时，推荐使用1个主操作 + n 个次操作，3个以上操作时把更多操作放到 Dropdown.Button 中组合使用。<a-dropdown>其中有button，也有menu
+
+- <a-menu slot="overlay">使用了一个插槽slot，当鼠标覆盖这个按钮时，会下拉带有3个操作的选项。
+
+- @click="handleMenuClick"，点击某一个选项时，会调用方法handleMenuClick，在控制台打印click字符串和e事件
+
+  ![image-20190813155428857](http://ww1.sinaimg.cn/large/006tNc79ly1g5y4p58qfvj30e704s3zd.jpg)
+
+  
+
+**main.js**
+
+```js
+...
+import "ant-design-vue/dist/antd.css";
+import { Button,Icon,Dropdown,Menu } from "ant-design-vue"; //按需导入
+
+Vue.use(Button).use(Icon).use(Dropdown).use(Menu)
+...
+```
+
+**浏览器**
+
+![image-20190813155018820](http://ww1.sinaimg.cn/large/006tNc79ly1g5y4p5p353j30at05fgly.jpg)
+
+## 2.8 按钮尺寸
+
+- 修改src/components/ButtonDemo.vue
+- src/main.js中引入第三方组件
+- 浏览器测试效果
+
+**ButtonDemo.vue**
+
+```vue
+<template>
+    <div id="buttondemo">
+
+        <br/>
+        <h3>8、按钮尺寸  </h3>
+        <p>按钮有大、中、小三种尺寸。
+            通过设置 size 为 large small 分别把按钮设为大、小尺寸。若不设置 size，则尺寸为中。</p>
+        <div>
+            <a-radio-group :value="size" @change="handleSizeChange">
+                <a-radio-button value="large">Large</a-radio-button>
+                <a-radio-button value="default">Default</a-radio-button>
+                <a-radio-button value="small">Small</a-radio-button>
+            </a-radio-group>
+            <br /><br />
+            <a-button type="primary" :size="size">Primary</a-button>
+            <a-button :size="size">Normal</a-button>
+            <a-button type="dashed" :size="size">Dashed</a-button>
+            <a-button type="danger" :size="size">Danger</a-button>
+            <br />
+            <a-button type="primary" shape="circle" icon="download" :size="size" />
+            <a-button type="primary" icon="download" :size="size">Download</a-button>
+            <br />
+            <a-button-group :size="size">
+                <a-button type="primary">
+                    <a-icon type="left" />Backward
+                </a-button>
+                <a-button type="primary">
+                    Forward<a-icon type="right" />
+                </a-button>
+            </a-button-group>
+        </div>
+
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "ButtonDemo",
+        data(){
+            return{
+            ...
+                size:'large'
+            }
+        },
+        methods:{
+        ...
+            handleSizeChange (e) {
+                this.size = e.target.value
+            },
+        }
+    }
+</script>
+```
+
+上面的代码中
+
+- <a-radio>需要导入{  Radio }
+- 每一个button都绑定了size，size根据@change="handleSizeChange"发生变化
+- e.target.value，先弄清楚e.target指向哪个元素，然后看看这个元素的value属性的值就可以得到了。初学者一般会把e.target和this弄混，搞不懂这两个具体指向哪个元素。简单来说，this就是指向当前事件所绑定的元素，而e.target指向事件执行时鼠标所点击区域的那个元素。容易搞不懂的地方是，初学者会认为当前事件所绑定的元素不就是鼠标所点击的那个元素嘛，这时候就要看看事件绑定的元素内部有没有子元素了，如果有子元素的话e.target指向这个子元素，如果没有，e.target和this都指向事件所绑定的元素。
+
+**main.js**
+
+```js
+...
+import "ant-design-vue/dist/antd.css";
+import { Button,Icon,Dropdown,Menu,Radio } from "ant-design-vue"; //按需导入
+
+Vue.use(Button).use(Icon).use(Dropdown).use(Menu).use(Radio)
+...
+```
+
+**浏览器**
+
+![image-20190813162233671](http://ww2.sinaimg.cn/large/006tNc79ly1g5y4p64u6mj30iw06fjs4.jpg)
+
+## 2.9 block 按钮
+
+- 修改src/components/ButtonDemo.vue
+- 浏览器测试效果
+
+**ButtonDemo.vue**
+
+```vue
+<template>
+    <div id="buttondemo">
+				...
+        <br/>
+        <h3>9、block 按钮  </h3>
+        <p>block属性将使按钮适合其父宽度。</p>
+        <div>
+            <a-button type="primary" block>Primary</a-button>
+            <a-button block>Default</a-button>
+            <a-button type="dashed" block>Dashed</a-button>
+            <a-button type="danger" block>danger</a-button>
+        </div>
+
+    </div>
+</template>
+
+```
+
+**浏览器**
+
+![image-20190813162409805](http://ww4.sinaimg.cn/large/006tNc79ly1g5y4p6lb00j30op05caab.jpg)
 

@@ -4,9 +4,9 @@ import router from './router'
 import store from './store'
 
 import "ant-design-vue/dist/antd.css";
-import { Button,Icon,Dropdown,Menu } from "ant-design-vue"; //按需导入
+import { Button,Icon,Dropdown,Menu,Radio } from "ant-design-vue"; //按需导入
 
-Vue.use(Button).use(Icon).use(Dropdown).use(Menu)
+Vue.use(Button).use(Icon).use(Dropdown).use(Menu).use(Radio)
 
 Vue.config.productionTip = false
 

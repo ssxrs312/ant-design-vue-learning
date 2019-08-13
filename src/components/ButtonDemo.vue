@@ -127,6 +127,45 @@
             </a-dropdown>
         </div>
 
+        <br/>
+        <h3>8、按钮尺寸  </h3>
+        <p>按钮有大、中、小三种尺寸。
+            通过设置 size 为 large small 分别把按钮设为大、小尺寸。若不设置 size，则尺寸为中。</p>
+        <div>
+            <a-radio-group :value="size" @change="handleSizeChange">
+                <a-radio-button value="large">Large</a-radio-button>
+                <a-radio-button value="default">Default</a-radio-button>
+                <a-radio-button value="small">Small</a-radio-button>
+            </a-radio-group>
+            <br /><br />
+            <a-button type="primary" :size="size">Primary</a-button>
+            <a-button :size="size">Normal</a-button>
+            <a-button type="dashed" :size="size">Dashed</a-button>
+            <a-button type="danger" :size="size">Danger</a-button>
+            <br />
+            <a-button type="primary" shape="circle" icon="download" :size="size" />
+            <a-button type="primary" icon="download" :size="size">Download</a-button>
+            <br />
+            <a-button-group :size="size">
+                <a-button type="primary">
+                    <a-icon type="left" />Backward
+                </a-button>
+                <a-button type="primary">
+                    Forward<a-icon type="right" />
+                </a-button>
+            </a-button-group>
+        </div>
+
+        <br/>
+        <h3>9、block 按钮  </h3>
+        <p>block属性将使按钮适合其父宽度。</p>
+        <div>
+            <a-button type="primary" block>Primary</a-button>
+            <a-button block>Default</a-button>
+            <a-button type="dashed" block>Dashed</a-button>
+            <a-button type="danger" block>danger</a-button>
+        </div>
+
     </div>
 </template>
 
@@ -137,6 +176,7 @@
             return{
                 zhuangtai:false,
                 iconZhuangtai:false,
+                size:'large'
             }
         },
         methods:{
@@ -148,7 +188,10 @@
             },
             handleMenuClick(e) {
                 console.log('click', e);
-            }
+            },
+            handleSizeChange (e) {
+                this.size = e.target.value
+            },
         }
 
 
