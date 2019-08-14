@@ -934,3 +934,221 @@ IconDemo.vue
 
 ![image-20190813215905494](http://ww4.sinaimg.cn/large/006tNc79ly1g5yebz86n9j30e502tq33.jpg)
 
+# 4 表格table
+
+## 4.1 远程加载数据
+
+- 新建src/components/TableDemo.vue
+- src/main.js中引入第三方组件
+- src/router.js的routers中设置TableDemo.vue的路由
+- src/views/Home.vue中router-link to指向TableDemo.vue的路径path或者name
+- 浏览器测试效果
+
+**TableDemo.vue**
+
+```vue
+<template>
+    <div class="tabledemo">
+        <br/>
+        <h3>1、远程加载数据</h3>
+        <p>这个例子通过简单的 ajax 读取方式，演示了如何从服务端读取并展现数据，具有筛选、排序等功能以及页面 loading 效果。开发者可以自行接入其他数据处理方式。
+            另外，本例也展示了筛选排序功能如何交给服务端实现，列不需要指定具体的 onFilter 和 sorter 函数，而是在把筛选和排序的参数发到服务端来处理。
+            注意，此示例使用 模拟接口，展示数据可能不准确，请打开网络面板查看请求。</p>
+        <a-table :columns="columns"
+                 :rowKey="record => record.login.uuid"
+                 :dataSource="data"
+                 :pagination="pagination"
+                 :loading="loading"
+                 @change="handleTableChange"
+        >
+            <template slot="name" slot-scope="name">
+                {{name.first}} {{name.last}}
+            </template>
+        </a-table>
+
+    </div>
+</template>
+
+<script>
+    import reqwest from 'reqwest';
+
+    const columns = [
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            sorter: true,
+            width: '20%',
+            scopedSlots: { customRender: 'name' },
+        },
+        {
+            title: 'Gender',
+            dataIndex: 'gender',
+            filters:[
+                {text:'Male',value:'male'},
+                {text:'Female',value:'female'}
+            ],
+            width:'20%'
+        },
+        {
+            title:'Email',
+            dataIndex:'email'
+        }
+    ]
+
+    export default {
+        name: "TableDemo",
+        mounted() {
+            this.fetch();
+        },
+        data() {
+            return {
+                data: [],
+                pagination: {},
+                loading: false,
+                columns,
+            }
+        },
+        methods: {
+            handleTableChange (pagination, filters, sorter) {
+                console.log(pagination);//打印pagination，每一次都不一样
+                const pager = { ...this.pagination };//将pager变成一个数组，然后变成参数序列。
+                pager.current = pagination.current;
+                this.pagination = pager;
+                this.fetch({
+                    results: pagination.pageSize,
+                    page: pagination.current,
+                    sortField: sorter.field,
+                    sortOrder: sorter.order,
+                    ...filters,
+                });//给params传参，例如{results:10,page:1,sortField:name,sortOrder:ascend,gender:Array(1)}
+            },
+            fetch (params = {}) {
+                console.log('params:', params);//第一次显示为  params:{};以后显示时，会根据分页、排序、筛选的变化而生成不同的参数。这里打印在控制台，就是为了说明params是一个变化的参数
+                this.loading = true
+                reqwest({
+                    url: 'https://randomuser.me/api',
+                    method: 'get',
+                    data: {
+                        results: 10,
+                        ...params,  //将一个数组变成参数序列，传给后台的data，不知道要传多少个参数，这个要传的参数是动态变化的，所以在这里把params变成一个数组，这个数组可以变成参数序列。
+                    },
+                    type: 'json',
+                }).then((data) => {     //promise对象用法，then（(response)=>{})是指后台将返回的结果放在response中
+                    const pagination = { ...this.pagination };//将pagination变成一个数组，然后变成参数序列。
+                    // Read total count from server
+                    // pagination.total = data.totalCount;
+                    pagination.total = 200;
+                    this.loading = false;
+                    this.data = data.results;
+                    this.pagination = pagination;//将可变的数组成为一个参数序列
+                });
+            }
+        },
+    }
+</script>
+
+<style scoped>
+.tabledemo{
+    margin: 2rem 2rem;
+}
+</style>
+```
+
+上面的代码中
+
+- <a-table>需要导入{ Table }
+
+- :columns  表格列的配置描述，需要在下面的script中配置
+
+- :rowKey  表格行key的取值，可以是字符串或者一个函数
+
+- :dataSource 数据数组
+
+- :pagination 分页器
+
+- :loading 是否加载
+
+- @change="handleTableChange"  change事件，分页、排序、筛选变化时触发，调用handleTableChange方法
+
+- <template slot="name" slot-scope="name">
+                  {{name.first}} {{name.last}}
+              </template>
+
+  插槽slot="name"，使用的范围=“name"，插槽让{{name.first}} {{name.last}}放在一起显示。使用时就需要scopedSlots: { customRender: 'name' },name指的是dataIndex。为了更好的理解，我们把slot注释掉，然后把dataIndex改成name.first，代码如下
+
+  ![image-20190814105215853](http://ww3.sinaimg.cn/large/006tNc79ly1g5z226zu4jj30en07yt9r.jpg)
+
+  效果如下
+
+  ![image-20190814105247098](http://ww4.sinaimg.cn/large/006tNc79ly1g5z227f39yj30os0ixmzw.jpg)
+
+  上面的测试也证明了slot可以让多个字段放在一列显示。
+
+- import reqwest from 'reqwest';  类似ajax，需要install，如果不知道install什么，就全局install把，我用的是sudo npm install，就是将所有需要的模块安装模块到`node_modules`目录。
+-  const columns，申明变量columns，在这里对表格列的描述进行配置。有很多描述，比如
+  - title，标题
+  - dataIndex，列显示的字段，后台传什么就显示什么，字段名要跟后台一致
+  - sorter，排序
+  - width，宽，样式设置
+  - scopedSlots，插槽范围
+  - filters，过滤数组
+-  mounted() ，初始化的时候执行
+- fetch (params = {}) ，参数params是json类型，先没有值
+- ...params是es6的语法，扩展运算符(...)。[数组的扩展](https://es6.ruanyifeng.com/?search=...&x=6&y=12#docs/array)
+- 实际上handleTableChange方法中的pager是为了理解，去掉后没影响
+
+![image-20190814113534976](http://ww3.sinaimg.cn/large/006tNc79ly1g5z227w5tgj30et05t75a.jpg)
+
+**main.js**
+
+```js
+...
+
+import "ant-design-vue/dist/antd.css";
+import { Button,Icon,Dropdown,Menu,Radio,Table } from "ant-design-vue"; //按需导入
+
+Vue.use(Button).use(Icon).use(Dropdown).use(Menu).use(Radio).use(Table)
+...
+```
+
+**router.js**
+
+```js
+
+import TableDemo from '@/components/TableDemo.vue'
+
+export default new Router({
+  routes: [
+ 
+    {
+      path: '/tableDemo',
+      name: 'tableDemo',
+      component: TableDemo
+    },
+  ]
+})
+```
+
+**Home.vue**
+
+```vue
+<template>
+  <div class="home">
+
+      <br/>
+      <h1>列表index</h1>
+      <ul>
+         
+          <li>
+              <router-link to="/tableDemo">TableDemo</router-link>：表格 Table
+          </li>
+      </ul>
+
+  </div>
+</template>
+```
+
+**浏览器**
+
+![image-20190814114004260](http://ww2.sinaimg.cn/large/006tNc79ly1g5z228u4fqj30pg0klq6b.jpg)
+

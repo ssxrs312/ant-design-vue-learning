@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import ButtonDemo from '@/components/ButtonDemo.vue'
 import IconDemo from '@/components/IconDemo.vue'
+import TableDemo from '@/components/TableDemo.vue'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
       path: '/iconDemo',
       name: 'iconDemo',
       component: IconDemo
+    },
+    {
+      path: '/tableDemo',
+      name: 'tableDemo',
+      component: TableDemo
     },
 
   ]
