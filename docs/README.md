@@ -1152,3 +1152,130 @@ export default new Router({
 
 ![image-20190814114004260](http://ww2.sinaimg.cn/large/006tNc79ly1g5z228u4fqj30pg0klq6b.jpg)
 
+# 5 表单form
+
+## 5.1 表单联动
+
+- 新建src/components/FormDemo.vue
+- src/main.js中引入第三方组件
+- src/router.js的routers中设置FormDemo.vue的路由
+- src/views/Home.vue中router-link to指向FormDemo.vue的路径path或者name
+- 浏览器测试效果
+
+FormDemo.vue
+
+```vue
+<template>
+    <div>
+        <br/>
+        <h3>1、表单联动</h3>
+        <p>使用 setFieldsValue 来动态设置其他控件的值。</p>
+        <a-form
+                :form="form"
+                @submit="handleSubmit"
+        >
+            <a-form-item
+                    label="Note"
+                    :label-col="{ span: 5 }"
+                    :wrapper-col="{ span: 12 }"
+            >
+                <a-input
+                        v-decorator="[
+          'note',
+          {rules: [{ required: true, message: 'Please input your note!' }]}
+        ]"
+                />
+            </a-form-item>
+            <a-form-item
+                    label="Gender"
+                    :label-col="{ span: 5 }"
+                    :wrapper-col="{ span: 12 }"
+            >
+                <a-select
+                        v-decorator="[
+          'gender',
+          {rules: [{ required: true, message: 'Please select your gender!' }]}
+        ]"
+                        placeholder="Select a option and change input text above"
+                        @change="handleSelectChange"
+                >
+                    <a-select-option value="male">
+                        male
+                    </a-select-option>
+                    <a-select-option value="female">
+                        female
+                    </a-select-option>
+                </a-select>
+            </a-form-item>
+            <a-form-item
+                    :wrapper-col="{ span: 12, offset: 5 }"
+            >
+                <a-button
+                        type="primary"
+                        html-type="submit"
+                >
+                    Submit
+                </a-button>
+            </a-form-item>
+        </a-form>
+
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "FormDemo",
+        data () {
+            return {
+                formLayout: 'horizontal',
+                form: this.$form.createForm(this),
+            };
+        },
+        methods: {
+            handleSubmit (e) {
+                e.preventDefault();
+                this.form.validateFields((err, values) => {
+                    if (!err) {
+                        console.log('Received values of form: ', values);
+                    }
+                });
+            },
+            handleSelectChange (value) {
+                console.log(value);
+                this.form.setFieldsValue({
+                    note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
+                });
+            },
+        },
+    }
+</script>
+
+<style scoped>
+
+</style>
+```
+
+上面的代码中，
+
+- <a-form>、<a-input>、<a-select>需要导入{ Form,Input,Select }
+- :label-col="{ span: 5 }"  24格栅，[Grid格栅](https://vue.ant.design/components/grid-cn/#API)
+- :wrapper-col="{ span: 10 }"  输入框的长度
+- 换一种解释方法：在官方文档中，读一遍源代码，自己跑起来试一遍，对照API，就明白了。可意会不可言传
+- 怎么看按官方文档呢，[form表单](https://vue.ant.design/components/form-cn/)
+
+![image-20190815103936557](http://ww2.sinaimg.cn/large/006tNc79ly1g605zo10cdj30pw0ccq46.jpg)
+
+在页面右侧有API，对于不懂的可以自己查看。对照交互效果、代码、API就能明白了
+
+![image-20190815104000466](http://ww1.sinaimg.cn/large/006tNc79ly1g605zoxrncj305h0at0t4.jpg)
+
+**main.js**
+
+```js
+...
+import "ant-design-vue/dist/antd.css";
+import { Button,Icon,Dropdown,Menu,Radio,Table,Form,Input,Select } from "ant-design-vue"; //按需导入
+
+Vue.use(Button).use(Icon).use(Dropdown).use(Menu).use(Radio).use(Table).use(Form).use(Input).use(Select)
+...
+```

@@ -13,6 +13,9 @@
           <li>
               <router-link to="/tableDemo">TableDemo</router-link>：表格 Table
           </li>
+          <li>
+              <router-link to="/formDemo">FormDemo</router-link>：表单 Form
+          </li>
       </ul>
 
   </div>

@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import ButtonDemo from '@/components/ButtonDemo.vue'
 import IconDemo from '@/components/IconDemo.vue'
 import TableDemo from '@/components/TableDemo.vue'
+import FormDemo from '@/components/FormDemo.vue'
 
 Vue.use(Router)
 
@@ -31,6 +32,10 @@ export default new Router({
       name: 'tableDemo',
       component: TableDemo
     },
-
+    {
+      path: '/formDemo',
+      name: 'formDemo',
+      component: FormDemo
+    },
   ]
 })
