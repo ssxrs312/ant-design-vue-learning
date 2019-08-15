@@ -4,9 +4,10 @@ import router from './router'
 import store from './store'
 
 import "ant-design-vue/dist/antd.css";
-import { Button,Icon,Dropdown,Menu,Radio,Table,Form,Input,Select } from "ant-design-vue"; //按需导入
+import { Button,Icon,Dropdown,Menu,Radio,Table,Form,Input,Select,Row,Col } from "ant-design-vue"; //按需导入
 
-Vue.use(Button).use(Icon).use(Dropdown).use(Menu).use(Radio).use(Table).use(Form).use(Input).use(Select)
+Vue.use(Button).use(Icon).use(Dropdown).use(Menu).use(Radio).use(Table).use(Form).use(Input).use(Select).use(Row)
+    .use(Col)
 
 Vue.config.productionTip = false
 

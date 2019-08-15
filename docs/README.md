@@ -1279,3 +1279,85 @@ import { Button,Icon,Dropdown,Menu,Radio,Table,Form,Input,Select } from "ant-des
 Vue.use(Button).use(Icon).use(Dropdown).use(Menu).use(Radio).use(Table).use(Form).use(Input).use(Select)
 ...
 ```
+
+# 6 格栅grid
+
+- 新建src/components/GridDemo.vue
+- src/main.js中引入第三方组件
+- src/router.js的routers中设置GridDemo.vue的路由
+- src/views/Home.vue中router-link to指向GridDemo.vue的路径path或者name
+- 浏览器测试效果
+
+**GridDemo.vue**
+
+```vue
+<template>
+    <div class="gridDemo">
+        <br/>
+        <h3>1、flex布局</h3>
+        <p>Flex 布局基础。
+            使用 row-flex 定义 flex 布局，其子元素根据不同的值 start,center,end,space-between,space-around，分别定义其在父节点里面的排版方式。</p>
+        <div class="gutter-example">
+            <a-row :gutter="16" style="background: red">
+                <a-col class="gutter-row" :span="6" style="background:yellow">
+                    <div class="gutter-box">col-6</div>
+                </a-col>
+                <a-col class="gutter-row" :span="6" >
+                    <div class="gutter-box">col-6</div>
+                </a-col>
+                <a-col class="gutter-row" :span="6">
+                    <div class="gutter-box">col-6</div>
+                </a-col>
+                <a-col class="gutter-row" :span="6">
+                    <div class="gutter-box">col-6</div>
+                </a-col>
+            </a-row>
+        </div>
+
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "GridDemo"
+    }
+</script>
+
+<style scoped>
+ .gridDemo{
+     margin: 2rem 2rem;
+}
+
+ .gutter-box {
+     background: #00A0E9;
+
+ }
+</style>
+```
+
+上面的代码中
+
+- :gutter="16"  格栅间隔，比如格栅系统是24，格栅间隔=24-16=8。:gutter是动态属性绑定，说明格栅间隔能支持响应式的对象写法 `{ xs: 8, sm: 16, md: 24}`
+- 响应式对象有
+  - xs    <576px
+  - sm   >=576px
+  - md  >=768px
+  - lg  >=992px
+  - xl  >=1200px
+  - xxl   >=1600px
+
+**main.js**
+
+```js
+
+import "ant-design-vue/dist/antd.css";
+import { Button,Icon,Dropdown,Menu,Radio,Table,Form,Input,Select,Row,Col } from "ant-design-vue"; //按需导入
+
+Vue.use(Button).use(Icon).use(Dropdown).use(Menu).use(Radio).use(Table).use(Form).use(Input).use(Select).use(Row).use(Col)
+
+```
+
+**浏览器**
+
+![image-20190815141042639](http://ww4.sinaimg.cn/large/006tNc79ly1g60c25biskj30p703yt94.jpg)
+

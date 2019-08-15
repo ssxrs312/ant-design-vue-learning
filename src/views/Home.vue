@@ -16,6 +16,9 @@
           <li>
               <router-link to="/formDemo">FormDemo</router-link>：表单 Form
           </li>
+          <li>
+              <router-link to="/gridDemo">GridDemo</router-link>：格栅 Grid
+          </li>
       </ul>
 
   </div>
